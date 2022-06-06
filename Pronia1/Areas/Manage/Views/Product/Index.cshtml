@@ -1,0 +1,253 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Silmek Isteyirsen? </h5>
+
+            </div>
+
+            <form method="post" asp-action="Delete" class="modal-footer">
+                <button type="button" class="btn btn-primary " data-bs-dismiss="modal">No</button>
+                <button type="submit" id="deletebtn" class="btn btn-danger">Yes</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <!-- Title and Top Buttons Start -->
+    <div class="page-title-container">
+        <div class="row">
+            <!-- Title Start -->
+            <div class="col-auto mb-3 mb-md-0 me-auto">
+                <div class="w-auto sw-md-30">
+                    <a href="#" class="muted-link pb-1 d-inline-block breadcrumb-back">
+                        <i data-cs-icon="chevron-left" data-cs-size="13"></i>
+                        <span class="text-small align-middle">Home</span>
+                    </a>
+                    <h1 class="mb-0 pb-0 display-4" id="title">Order List</h1>
+                </div>
+            </div>
+            <!-- Title End -->
+            <!-- Top Buttons Start -->
+            <div class="col-3 d-flex align-items-end justify-content-end">
+                <!-- Check Button Start -->
+                <div class="btn-group ms-1 check-all-container">
+                    <div class="btn btn-outline-primary btn-custom-control p-0 ps-3 pe-2" data-target="#checkboxTable">
+                        <span class="form-check float-end">
+                            <input type="checkbox" class="form-check-input" id="checkAll" />
+                        </span>
+                    </div>
+                    <button type="button"
+                            class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
+                            data-bs-offset="0,3"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"></button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">
+                            <span class="align-middle d-inline-block">Status</span>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <span class="align-middle d-inline-block">Move</span>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <span class="align-middle d-inline-block">Delete</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Check Button End -->
+            </div>
+            <!-- Top Buttons End -->
+        </div>
+    </div>
+    <!-- Title and Top Buttons End -->
+    <!-- Controls Start -->
+    <div class="row mb-2">
+        <!-- Search Start -->
+        <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+            <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                <input class="form-control" placeholder="Search" />
+                <span class="search-magnifier-icon">
+                    <i data-cs-icon="search"></i>
+                </span>
+                <span class="search-delete-icon d-none">
+                    <i data-cs-icon="close"></i>
+                </span>
+            </div>
+        </div>
+        <!-- Search End -->
+
+        <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
+            <div class="d-inline-block">
+                <!-- Print Button Start -->
+                <button class="btn btn-icon btn-icon-only btn-foreground-alternate shadow"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        data-bs-delay="0"
+                        title="Print"
+                        type="button">
+                    <i data-cs-icon="print"></i>
+                </button>
+                <!-- Print Button End -->
+                <!-- Export Dropdown Start -->
+                <div class="d-inline-block">
+                    <button class="btn p-0" data-bs-toggle="dropdown" type="button" data-bs-offset="0,3">
+                        <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown"
+                              data-bs-delay="0"
+                              data-bs-placement="top"
+                              data-bs-toggle="tooltip"
+                              title="Export">
+                            <i data-cs-icon="download"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu shadow dropdown-menu-end">
+                        <button class="dropdown-item export-copy" type="button">Copy</button>
+                        <button class="dropdown-item export-excel" type="button">Excel</button>
+                        <button class="dropdown-item export-cvs" type="button">Cvs</button>
+                    </div>
+                </div>
+                <!-- Export Dropdown End -->
+                <!-- Length Start -->
+                <div class="dropdown-as-select d-inline-block" data-childSelector="span">
+                    <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
+                        <span class="btn btn-foreground-alternate dropdown-toggle"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              data-bs-delay="0"
+                              title="Item Count">
+                            10 Items
+                        </span>
+                    </button>
+                    <div class="dropdown-menu shadow dropdown-menu-end">
+                        <a class="dropdown-item" href="#">5 Items</a>
+                        <a class="dropdown-item active" href="#">10 Items</a>
+                        <a class="dropdown-item" href="#">20 Items</a>
+                    </div>
+                </div>
+                <!-- Length End -->
+            </div>
+        </div>
+    </div>
+    <!-- Controls End -->
+    <!-- Order List Start -->
+    <div class="row">
+        <div class="col-12 mb-5">
+            <div class="card mb-2 bg-transparent no-shadow d-none d-md-block">
+                <div class="card-body pt-0 pb-0 sh-3">
+                    <div class="row g-0 h-100 align-content-center">
+                        <div class="col-1 col-md-1 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">ID</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">NAME</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">PRICE</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">Raiting</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">Category</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">Stock Count</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">Setting</div>
+                        <div class="col-1 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">Status</div>
+                    </div>
+                </div>
+            </div>
+            <div id="checkboxTable">
+                @foreach (var item in Model)
+                {
+
+
+                    <div class="card mb-2">
+                        <div class="card-body pt-0 pb-0 sh-21 sh-md-8">
+                            <div class="row g-0 h-100 align-content-center">
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0  h-md-100 position-relative">
+                                    <div class="text-muted text-small d-md-none">Image</div>
+                                    @if (item.productImages.Where(p=>p.IsMain==true).FirstOrDefault() !=null)
+                                   {
+                                       
+                                    <img src="~/assets/images/product/@item.productImages.Where(p=>p.IsMain==true).FirstOrDefault().Url" style="height:100%" alt="Alternate text"/>
+                                   }
+@*                                    <a href="Orders.Detail.html" class="text-truncate h-100 d-flex align-items-center">@item.Id </a>
+*@                                </div>
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 ">
+                                    <div class="text-muted text-small d-md-none">Name</div>
+                                    <div class="text-alternate">@item.Name</div>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 ">
+                                    <div class="text-muted text-small d-md-none">Price</div>
+                                    <div class="text-alternate">
+                                        <span>
+                                            <span class="text-small">$</span>
+                                            @item.Price
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 ">
+                                    <div class="text-muted text-small d-md-none">Raiting</div>
+                                    <div class="text-alternate">@item.Raiting</div>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 ">
+                                    <div class="text-muted text-small d-md-none">Stock Count</div>
+                                    <div class="text-alternate">@item.StockCount</div>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0">
+                                    <div class="text-muted text-small d-md-none">Category</div>
+                                    <div class="text-alternate">@item.Category.Name</div>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 ">
+                                 <div class="text-muted text-small d-md-none">Status</div>
+                                <div class="text-alternate">
+                                    @(item.IsDelete==false?Html.Raw("<span class='badge rounded-pill bg-outline-primary'>Gorsenir</span>"):Html.Raw("<span class='badge rounded-pill bg-outline-danger'>Gorsenmir</span>")) 
+                                </div>
+                                </div>
+                               
+
+
+                                <div class="col-1 d-flex flex-row mb-2 mb-lg-0 align-items-center justify-content-lg-center">
+                                    <span type="button" asp-controller="Slider" asp-action="Delete" asp-route-id="@item.Id" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id" class="btn btn-outline-warning mx-lg-1">Delete</span>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary mx-lg-1">Edit</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    <!-- Order List End -->
+    <!-- Pagination Start -->
+    <div class="d-flex justify-content-center">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link shadow" href="#" tabindex="-1" aria-disabled="true">
+                        <i data-cs-icon="chevron-left"></i>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link shadow" href="#">1</a></li>
+                <li class="page-item"><a class="page-link shadow" href="#">2</a></li>
+                <li class="page-item"><a class="page-link shadow" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">
+                        <i data-cs-icon="chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- Pagination End -->
+</div>
+@section scripts{
+<script src="~/admin/js/cs/checkall.js"></script>
+<script src="~/admin/js/pages/orders.list.js"></script>
+<script src="~/admin/js/common.js"></script>
+<script src="~/admin/js/scripts.js"></script>
+
+<script>
+    $("span[type='button']").click(function(){
+        $("#deleteModal form").attr("action", "/Manage/Slider/Delete/"+$(this).attr("data-id"))
+    })
+
+</script>
+        }

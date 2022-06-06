@@ -1,0 +1,75 @@
+﻿@model Slider
+@{
+    ViewData["Title"] = "Update";
+}
+
+<div class="container">
+    <!-- Title and Top Buttons Start -->
+    <div class="page-title-container">
+        <div class="row g-0">
+            <!-- Title Start -->
+            <div class="col-auto mb-3 mb-md-0 me-auto">
+                <div class="w-auto sw-md-30">
+                    <a href="#" class="muted-link pb-1 d-inline-block breadcrumb-back">
+                        <i data-cs-icon="chevron-left" data-cs-size="13"></i>
+                        <span class="text-small align-middle">Sliders</span>
+                    </a>
+                    <h1 class="mb-0 pb-0 display-4" id="title">Slider Create</h1>
+                </div>
+            </div>
+            <!-- Title End -->
+
+
+        </div>
+    </div>
+    <!-- Title and Top Buttons End -->
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Product Info Start -->
+            <div class="mb-5">
+                <h2 class="small-title">Product Info</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span class="text-primary" asp-validation-for="Name"></span>
+
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Image" class="form-label"></label>
+                                <input asp-for="Image" class="form-control" />
+                                <span class="text-primary" asp-validation-for="Image"></span>
+                                <img width="200" src="~/assets/images/slider/inner-img/@Model.Image" />
+
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Title" class="form-label">Description</label>
+                                <textarea asp-for="Title" class="form-control"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="DiscountPercent" class="form-label">Discount Percent</label>
+                                <input asp-for="DiscountPercent" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+
+                                <input type="submit" class="btn bg-primary" value="Create" />
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+    </div>
+</div>
+

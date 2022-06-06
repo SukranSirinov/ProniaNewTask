@@ -1,0 +1,130 @@
+﻿@model Product
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+@section styles{
+<link href="~/admin/css/vendor/select2.min.css" rel="stylesheet" />
+<link href="~/admin/css/vendor/select2-bootstrap4.min.css" rel="stylesheet" />
+}
+
+<div class="container">
+    <!-- Title and Top Buttons Start -->
+    <div class="page-title-container">
+        <div class="row g-0">
+            <!-- Title Start -->
+            <div class="col-auto mb-3 mb-md-0 me-auto">
+                <div class="w-auto sw-md-30">
+                    <a href="#" class="muted-link pb-1 d-inline-block breadcrumb-back">
+                        <i data-cs-icon="chevron-left" data-cs-size="13"></i>
+                        <span class="text-small align-middle">Product</span>
+                    </a>
+                    <h1 class="mb-0 pb-0 display-4" id="title">Product Edit</h1>
+                </div>
+            </div>
+            <!-- Title End -->
+
+
+        </div>
+    </div>
+    <!-- Title and Top Buttons End -->
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Product Info Start -->
+            <div class="mb-5">
+                <h2 class="small-title">Product Info</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span class="text-primary" asp-validation-for="Name"></span>
+
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Price" class="form-label"></label>
+                                <input asp-for="Price" class="form-control" />
+                                <span class="text-primary" asp-validation-for="Price"></span>
+
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Raiting" class="form-label"></label>
+                                <input asp-for="Raiting" class="form-control" />
+                                <span class="text-primary" asp-validation-for="Raiting"></span>
+
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="StockCount" class="form-label"></label>
+                                <input asp-for="StockCount" class="form-control" />
+                                <span class="text-primary" asp-validation-for="StockCount"></span>
+
+                            </div>
+                             <div class="mb-3">
+                                <label asp-for="MainPhoto" class="form-label">Main Photo</label>
+                                <input asp-for="MainPhoto" accept="image/*" class="form-control" />
+                                <span class="text-primary" asp-validation-for="MainPhoto"></span>
+
+                            </div>
+                            <div class="mb-3 dlt-img">
+                                <label>Main Photo:</label>
+                                <img width="200"  src="~/assets/images/product/@Model.productImages.FirstOrDefault(p=>p.IsMain==true).Url" alt="Alternate Text"/>
+                                   <input  type="hidden"  asp-for="ImgId" value="@Model.productImages.FirstOrDefault(p=>p.IsMain==true).Id" />
+
+                            </div>
+                           <div class="mb-3">
+                                <label asp-for="Photos" class="form-label"></label>
+                                <input asp-for="Photos" accept="image/*" class="form-control" />
+                                <span class="text-primary" asp-validation-for="Photos"></span>
+
+                            </div>
+                            <div class="mb-3">
+                                <label>Product Photo:</label>
+                                <div class="row ">
+                                @foreach (var item in Model.productImages.Where(p=>p.IsMain==false).ToList())
+                               {
+                                   <div class="col dlt-img">
+                                     <img width="200" src="~/assets/images/product/@item.Url" alt="Alternate Text"/>
+                                     <input  type="hidden"  asp-for="ImgId" value="@item.Id" />
+
+                                   </div>
+                               }
+                               </div>
+
+                            </div>
+                             
+
+                            <div class="mb-3">
+                                <select class="select2 form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories,nameof(Category.Id),nameof(Category.Name)))">
+                                    <option disabled selected>Category</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <input type="submit" class="btn bg-primary" value="Create" />
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Product Info End -->
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/admin/js/vendor/select2.full.min.js"></script>
+<script>
+    $(".select2").select2({
+        templateSelection:formatState
+    });
+    $(".dlt-img").click(function(){
+        $(this).remove();
+    })
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" integrity="sha512-FOhq9HThdn7ltbK8abmGn60A/EMtEzIzv1rvuh+DqzJtSGq8BRdEN0U+j0iKEIffiw/yEtVuladk6rsG4X6Uqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+}
+
